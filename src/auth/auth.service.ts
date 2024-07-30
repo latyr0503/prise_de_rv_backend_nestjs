@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -14,30 +14,38 @@ export class AuthService {
   ) {}
   async signUp(
     username: string,
-    passeword: string,
     fullName: string,
     email: string,
     phoneNumber: number,
+    password: string,
     address: string,
-    specialité: string,
+    speciality: string,
   ): Promise<void> {
-    const hashedPassword = await bcrypt.hash(passeword, 10);
+    // Vérifie si l'username ou l'email existent déjà
+    const existingUser = await this.usersRepository.findOne({
+      where: [{ username }, { email }],
+    });
+
+    if (existingUser) {
+      throw new ConflictException('Username or email already exists');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
       username,
-      passeword: hashedPassword,
       fullName,
       email,
       phoneNumber,
+      password: hashedPassword,
       address,
-      specialité,
+      speciality,
     });
     await this.usersRepository.save(user);
     console.log(`L'utilisateur ${username} est insrit avec succés.`);
   }
 
-  async signIn(username: string, passeword: string): Promise<string> {
+  async signIn(username: string, password: string): Promise<string> {
     const user = await this.usersRepository.findOne({ where: { username } });
-    if (user && (await bcrypt.compare(passeword, user.passeword))) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { username: user.username, sub: user.id };
       return this.jwtService.sign(payload);
     }

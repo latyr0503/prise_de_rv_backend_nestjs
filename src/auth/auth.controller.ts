@@ -10,22 +10,22 @@ export class AuthController {
     @Body()
     body: {
       username: string;
-      password: string;
       fullName: string;
       email: string;
       phoneNumber: number;
+      password: string;
       address: string;
-      specialité: string;
+      speciality: string;
     },
   ) {
     await this.authService.signUp(
       body.username,
-      body.password,
-      body.fullName,
       body.email,
+      body.fullName,
       body.phoneNumber,
+      body.password,
       body.address,
-      body.specialité,
+      body.speciality,
     );
     return { message: 'votre inscription est passer avec succés' };
   }
