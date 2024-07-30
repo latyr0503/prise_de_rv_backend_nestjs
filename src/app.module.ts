@@ -4,8 +4,12 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { RendezvousModule } from './rendezvous/rendezvous.module';
-// import { RendezVous } from './rendezvous/rendezvous.entity';
 import { PatientModule } from './patient/patient.module';
+import { DashboardController } from './dashboard/dashboard.controller';
+import { DashboardService } from './dashboard/dashboard.service';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { Patient } from './patient/patient.entity';
+import { RendezVous } from './rendezvous/rendezvous.entity';
 
 @Module({
   imports: [
@@ -23,8 +27,10 @@ import { PatientModule } from './patient/patient.module';
     AuthModule,
     RendezvousModule,
     PatientModule,
+    DashboardModule,
+    TypeOrmModule.forFeature([Patient, RendezVous]),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [DashboardService],
+  controllers: [DashboardController],
 })
 export class AppModule {}

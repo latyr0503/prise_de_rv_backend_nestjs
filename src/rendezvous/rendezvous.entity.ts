@@ -6,10 +6,13 @@ export class RendezVous {
   id: number;
 
   @Column()
-  raison: string;
+  object: string;
 
   @Column()
   doctor: string;
+
+  @Column()
+  patient: string;
 
   @Column()
   date: string;

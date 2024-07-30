@@ -21,7 +21,6 @@ export class AuthService {
     address: string,
     speciality: string,
   ): Promise<void> {
-    // Vérifie si l'username ou l'email existent déjà
     const existingUser = await this.usersRepository.findOne({
       where: [{ username }, { email }],
     });
@@ -50,5 +49,9 @@ export class AuthService {
       return this.jwtService.sign(payload);
     }
     throw new Error('Utilisateur non vu dans notre base de données');
+  }
+
+  async findOne(id: number): Promise<User> {
+    return this.usersRepository.findOneBy({ id });
   }
 }

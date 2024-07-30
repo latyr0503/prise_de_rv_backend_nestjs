@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { RendezVous } from 'src/rendezvous/rendezvous.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Patient {
@@ -6,14 +7,20 @@ export class Patient {
   id: number;
 
   @Column()
-  prenom: string;
+  fullName: string;
 
   @Column()
-  nom: string;
+  email: string;
+
+  @Column()
+  number: string;
 
   @Column()
   age: number;
 
   @Column()
-  localisation: string;
+  address: string;
+
+  @OneToMany(() => RendezVous, (rendezVous) => rendezVous.patient)
+  rendezVous: RendezVous[];
 }
