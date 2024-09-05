@@ -13,7 +13,6 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async signUp(
-    username: string,
     fullName: string,
     email: string,
     phoneNumber: number,
@@ -22,15 +21,14 @@ export class AuthService {
     speciality: string,
   ): Promise<void> {
     const existingUser = await this.usersRepository.findOne({
-      where: [{ username }, { email }],
+      where: [{ email }],
     });
 
     if (existingUser) {
-      throw new ConflictException('Username or email already exists');
+      throw new ConflictException('email already exists');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
-      username,
       fullName,
       email,
       phoneNumber,
@@ -39,13 +37,13 @@ export class AuthService {
       speciality,
     });
     await this.usersRepository.save(user);
-    console.log(`L'utilisateur ${username} est insrit avec succés.`);
+    console.log(`L'utilisateur ${fullName} est insrit avec succés.`);
   }
 
-  async signIn(username: string, password: string): Promise<string> {
-    const user = await this.usersRepository.findOne({ where: { username } });
+  async signIn(email: string, password: string): Promise<string> {
+    const user = await this.usersRepository.findOne({ where: { email } });
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = { username: user.username, sub: user.id };
+      const payload = { email: user.email, sub: user.id };
       return this.jwtService.sign(payload);
     }
     throw new Error('Utilisateur non vu dans notre base de données');

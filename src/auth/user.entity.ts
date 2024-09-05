@@ -7,11 +7,6 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
   @Column()
   @IsNotEmpty()
   @IsString()

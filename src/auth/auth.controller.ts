@@ -9,7 +9,6 @@ export class AuthController {
   async signUp(
     @Body()
     body: {
-      username: string;
       fullName: string;
       email: string;
       phoneNumber: number;
@@ -19,7 +18,6 @@ export class AuthController {
     },
   ) {
     await this.authService.signUp(
-      body.username,
       body.email,
       body.fullName,
       body.phoneNumber,
@@ -31,8 +29,8 @@ export class AuthController {
   }
 
   @Post('signin')
-  async signIn(@Body() body: { username: string; password: string }) {
-    const token = await this.authService.signIn(body.username, body.password);
+  async signIn(@Body() body: { email: string; password: string }) {
+    const token = await this.authService.signIn(body.email, body.password);
     return {
       message: `Bienvenue dans la page d'accueil, votre token est : ${token}`,
     };
