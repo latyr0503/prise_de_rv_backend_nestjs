@@ -8,6 +8,7 @@ import { DashboardService } from './dashboard/dashboard.service';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { Patient } from './patient/patient.entity';
 import { RendezVous } from './rendezvous/rendezvous.entity';
+import { MailModule } from './mail/mail.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -30,6 +31,7 @@ dotenv.config();
     PatientModule,
     DashboardModule,
     TypeOrmModule.forFeature([Patient, RendezVous]),
+    MailModule,
   ],
   providers: [DashboardService],
   controllers: [DashboardController],

@@ -29,10 +29,10 @@ export class RendezvousController {
     return this.rendezvousService.create(createRvDto);
   }
 
-  @Put()
+  @Put(':id') // Correction : ajout de l'ID dans la route
   update(
-    @Param('id') id: number,
-    @Body() updateRvDto: Partial<RendezVous>,
+    @Param('id') id: number, // Extraction de l'ID depuis les paramètres de la route
+    @Body() updateRvDto: Partial<RendezVous>, // DTO partiel pour l'update
   ): Promise<RendezVous> {
     return this.rendezvousService.update(id, updateRvDto);
   }

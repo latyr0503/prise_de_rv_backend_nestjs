@@ -6,7 +6,7 @@ export class RendezVous {
   id: number;
 
   @Column()
-  object: string;
+  motif: string;
 
   @Column()
   doctor: string;
@@ -14,12 +14,15 @@ export class RendezVous {
   @Column()
   patient: string;
 
-  @Column()
-  date: string;
+  @Column('date')
+  date: Date;
 
-  @Column()
+  @Column('time')
   heure: string;
 
   @Column()
-  lieu: string;
+  email: string;
+
+  @Column({ length: 15 })
+  numero: string;
 }
